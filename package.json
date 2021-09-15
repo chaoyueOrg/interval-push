@@ -1,0 +1,17 @@
+{
+  "name": "git-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./scripts/check-branch.js",
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^7.0.0",
+    "simple-git": "^2.45.1"
+  }
+}

@@ -1,0 +1,4 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+PATH=$PATH:/Users/void327/.nvm/versions/node/v16.4.1/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/local/mysql/bin:/Users/void327/Library/Android/sdk/tools:/Users/void327/Library/Android/sdk/platform-tools:/usr/local/tomcat/bin:/Library/Java/JavaVirtualMachines/jdk-11.0.11.jdk/Contents/Home/bin:/Users/void327/apache-maven-3.6.0/bin:/Users/void327/flutter/bin:/Users/void327/.rvm/bin
+npm test
