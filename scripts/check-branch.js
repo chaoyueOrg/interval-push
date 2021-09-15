@@ -5,7 +5,10 @@ const git = SimpleGit(projectPath);
 
 const initMethod = async () => {
   console.log('=================')
-  const currentBranch = await git.branch(['--no-merged'])
-  console.log(currentBranch);
+  const unmergedBranches = await git.branch(['--no-merged'])
+  const branchLen = Object.keys(unmergedBranches.branches);
+  if (branchLen > 0) {
+    process.exit(0)
+  }
 }
 initMethod()
