@@ -8,7 +8,7 @@ const initMethod = async () => {
   const unmergedBranches = await git.branch(['--no-merged'])
   const branchLen = Object.keys(unmergedBranches.branches).length;
   if (branchLen > 0) {
-    process.exit(0)
+    process.exit(1)
   }
 }
 initMethod()
