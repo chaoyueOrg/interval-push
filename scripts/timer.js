@@ -35,6 +35,7 @@ const intervalCommit = async () => {
     const currentCommit = needPushedArr[0];
     const result = await git.push([remoteName, `${currentCommit}:${currentBranch.current}`]);
     console.log(result);
+    // add pr
     await pr(currentBranch.current, 'master');
   }
   // process.exit(1);
