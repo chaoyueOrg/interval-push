@@ -37,7 +37,6 @@ const intervalCommit = async () => {
     console.log(result);
     await pr(currentBranch.current, 'master');
   }
-  // process.exit(1);
 }
 
 // setInterval(() => {
