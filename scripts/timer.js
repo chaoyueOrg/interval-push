@@ -9,7 +9,7 @@ const pr = async (head, base) => {
 
     // pull request
     const config = {
-      token: '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',
+      token: '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',
       owner: 'chaoyuexue',
       repo:  'interval-push',
       head,
