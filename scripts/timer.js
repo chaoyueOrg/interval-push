@@ -6,16 +6,19 @@ var release = require('github-pr-release');
 
 const intervalCommit = async () => {
   const logs = await git.raw('cherry')
+  const remoteName = await git.remote()
+  const currentBranch = await git.branch();
+  console.log(currentBranch.current);
   const needPushedArr = logs.split(/\n/g).filter(i => i !== '').map(i => i.split(/\s/g)[1]);
   console.log(needPushedArr);
   if (needPushedArr.length) {
-    const current = needPushedArr[0];
-    const result = await git.push();
-    console.log(reuslt);
+    const currentCommit = needPushedArr[0];
+    const result = await git.push([remoteName, `${currentCommit}:${currentBranch}`]);
+    console.log(result);
   }
   // process.exit(1);
 }
 
-setInterval(() => {
+// setInterval(() => {
   intervalCommit()
-}, 60000);
+// }, 60000);
