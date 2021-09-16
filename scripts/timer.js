@@ -17,6 +17,7 @@ const pr = async (head, base) => {
     };
     try {
       const prResult = await release(config);
+      console.log(prResult);
     } catch (error) {
       console.log(error);
     }
@@ -38,8 +39,7 @@ const intervalCommit = async () => {
   }
   // process.exit(1);
 }
-pr()
 
 // setInterval(() => {
-  // intervalCommit()
+  intervalCommit()
 // }, 60000);
