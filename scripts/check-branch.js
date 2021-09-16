@@ -12,4 +12,12 @@ const initMethod = async () => {
   // }
   process.exit(0)
 }
-initMethod()
+
+const intervalCommit = async () => {
+  const logs = await git.log();
+  console.log(logs);
+  // process.exit(1);
+}
+
+intervalCommit()
+// initMethod()
