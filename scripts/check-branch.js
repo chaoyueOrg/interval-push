@@ -14,7 +14,7 @@ const initMethod = async () => {
 }
 
 const intervalCommit = async () => {
-  const logs = await git.log();
+  const logs = await git.raw('cherry', '-v')
   console.log(logs);
   // process.exit(1);
 }
