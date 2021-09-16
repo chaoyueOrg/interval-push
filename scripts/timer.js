@@ -5,20 +5,18 @@ const git = SimpleGit(projectPath);
 var release = require('github-pr-release');
 
 
-const pr = async () => {
+const pr = async (head, base) => {
 
     // pull request
     const config = {
-      token: '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',
+      token: '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',
       owner: 'chaoyuexue',
       repo:  'interval-push',
-      base: 'develop1',
-      head: 'master'
+      head,
+      base
     };
     try {
-      release(config).then(res => {
-        console.log(res);
-      }).catch(e => console.log(e, '=========='));
+      const prResult = await release(config);
     } catch (error) {
       console.log(error);
     }
@@ -36,6 +34,7 @@ const intervalCommit = async () => {
     const currentCommit = needPushedArr[0];
     const result = await git.push([remoteName, `${currentCommit}:${currentBranch.current}`]);
     console.log(result);
+    await pr(currentBranch.current, 'master');
   }
   // process.exit(1);
 }
