@@ -1,42 +1,28 @@
 const SimpleGit = require('simple-git/promise');
 const path = require('path');
-const https = require('https');
+const release = require('github-pr-release');
 const dotenv = require('dotenv');
 const projectPath = path.resolve(__dirname, '../')
 const git = SimpleGit(projectPath);
 dotenv.config({path: '.env'})
 const pr = async (head, base) => {
 
-    // pull request
-    const data = JSON.stringify({
-      head,
-      base,
-      title: 'adfafd',
-    })
-    console.log(process.env.git_token);
-    const config = {
-      hostname: 'api.github.com',
-      port: 443,
-      path: '/repos/chaoyuexue/interval-push/pulls',
-      method: 'POST',
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.3',
-        'accept': 'application/vnd.github.v3+json',
-        'Authorization': `token ${process.env.git_token}`
-      }
-    };
-    const req = https.request(config, res => {
-      console.log(res);
-      res.on('data', d => {
-        process.stdout.write(d);
-      })
-    });
-    req.on('error', error => {
-      console.error(error)
-    });
-    req.write(data)
-    req.end()
+  // pull request
+  const config = {
+    token: process.env.git_token,
+    owner: 'chaoyuexue',
+    repo:  'interval-push',
+    head,
+    base
+  };
+  try {
+    const prResult = await release(config);
+    console.log(prResult);
+  } catch (error) {
+    console.log(error);
+  }
 }
+
 
 const intervalCommit = async () => {
   const logs = await git.raw('cherry')
