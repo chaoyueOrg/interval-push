@@ -1,12 +1,10 @@
 const SimpleGit = require('simple-git/promise');
 const path = require('path');
 const https = require('https');
+const dotenv = require('dotenv');
 const projectPath = path.resolve(__dirname, '../')
 const git = SimpleGit(projectPath);
-var release = require('github-pr-release');
-
-const axiosInstance = axios()
-
+dotenv.config({path: '.env'})
 const pr = async (head, base) => {
 
     // pull request
@@ -15,14 +13,16 @@ const pr = async (head, base) => {
       base,
       title: 'adfafd',
     })
+    console.log(process.env.git_token);
     const config = {
       hostname: 'api.github.com',
       port: 443,
       path: '/repos/chaoyuexue/interval-push/pulls',
       method: 'POST',
       headers: {
-        'accept': 'application/json',
-        'Authorization': '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'
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.3',
+        'accept': 'application/vnd.github.v3+json',
+        'Authorization': `token ${process.env.git_token}`
       }
     };
     const req = https.request(config, res => {
