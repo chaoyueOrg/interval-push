@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "node ./scripts/check-branch.js",
     "prepare": "husky install"
   },
   "keywords": [],
@@ -12,10 +13,5 @@
   "devDependencies": {
     "husky": "^7.0.0",
     "simple-git": "^2.45.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "node ./scripts/check-branch.js"
-    }
   }
 }
