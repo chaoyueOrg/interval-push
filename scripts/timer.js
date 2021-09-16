@@ -1,26 +1,41 @@
 const SimpleGit = require('simple-git/promise');
 const path = require('path');
+const https = require('https');
 const projectPath = path.resolve(__dirname, '../')
 const git = SimpleGit(projectPath);
 var release = require('github-pr-release');
 
+const axiosInstance = axios()
 
 const pr = async (head, base) => {
 
     // pull request
-    const config = {
-      token: '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',
-      owner: 'chaoyuexue',
-      repo:  'interval-push',
+    const data = JSON.stringify({
       head,
-      base
+      base,
+      title: 'adfafd',
+    })
+    const config = {
+      hostname: 'api.github.com',
+      port: 443,
+      path: '/repos/chaoyuexue/interval-push/pulls',
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'Authorization': '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'
+      }
     };
-    try {
-      const prResult = await release(config);
-      console.log(prResult);
-    } catch (error) {
-      console.log(error);
-    }
+    const req = https.request(config, res => {
+      console.log(res);
+      res.on('data', d => {
+        process.stdout.write(d);
+      })
+    });
+    req.on('error', error => {
+      console.error(error)
+    });
+    req.write(data)
+    req.end()
 }
 
 const intervalCommit = async () => {
