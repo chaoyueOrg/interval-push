@@ -8,13 +8,33 @@ const projectPath = path.resolve(__dirname, "../");
 const git = SimpleGit(projectPath);
 dotenv.config({ path: ".env" });
 
-const merge_cache = [];
+let current_user = null;
+
+const initUser = async () => {
+  return new Promise((resolve, reject) => {
+    superagent
+      .get(`https://api.github.com/users/${process.env.current_user}`)
+      .set(
+        "User-Agent",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
+      )
+      .set("Authorization", `token ${process.env.git_token}`)
+      .end((err, res) => {
+        if(err) {
+          reject(err)
+        } else {
+          current_user = res.body.id;
+          resolve(res.body)
+        }
+      });
+  });
+}
 
 const pr = async (head, base) => {
   // pull request
   const config = {
     token: process.env.git_token,
-    owner: "chaoyuexue",
+    owner: "chaoyueOrg",
     repo: "interval-push",
     head,
     base,
@@ -31,7 +51,7 @@ const pr = async (head, base) => {
 const getPrs = () => {
   return new Promise((resolve, reject) => {
     superagent
-      .get("https://api.github.com/repos/chaoyuexue/interval-push/pulls")
+      .get("https://api.github.com/repos/chaoyueOrg/interval-push/pulls")
       .set(
         "User-Agent",
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
@@ -47,6 +67,9 @@ const getPrs = () => {
   });
 };
 const intervalCommit = async () => {
+  if (!current_user) {
+    await initUser();
+  }
   const logs = await git.raw("cherry");
   const remoteNameOrigin = await git.remote();
   const remoteName = remoteNameOrigin.replace(/\n/g, "");
@@ -59,11 +82,10 @@ const intervalCommit = async () => {
   console.log(needPushedArr);
 
   // 判断是否有merge
-  const currentMerged = await getPrs();
-  if (currentMerged) {
-    const id = currentMerged.id;
-    const target = merge_cache.find(i => i === id);
-    !target && merge_cache.push(merge_cache);
+  const currentMerged = (await getPrs()) || [];
+  const current_user_merged = currentMerged.filter(i => i.user.id === current_user);
+  if (current_user_merged.length) {
+    return;
   }
   if (needPushedArr.length) {
     const currentCommit = needPushedArr[0];
@@ -78,10 +100,5 @@ const intervalCommit = async () => {
 };
 
 // setInterval(() => {
-// intervalCommit()
-const test = async () => {
-  const res = await getPrs();
-  console.log(res)
-}
-test()
+intervalCommit()
 // }, 60000);
